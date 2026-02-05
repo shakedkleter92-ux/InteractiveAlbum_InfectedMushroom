@@ -47,11 +47,8 @@ function preload() {
     // Load HandPose
     handPose = ml5.handPose();
 
-    // Load All Album Tracks
-    // Note: We use the filename as the key
-    for (let track of albumTracks) {
-        songObjects[track.file] = loadSound(track.file);
-    }
+    // Audio loading moved to on-demand (when track is clicked)
+    // This fixes Safari compatibility - Safari blocks audio loading without user interaction
 }
 
 function setup() {
@@ -1387,7 +1384,7 @@ function setupUI() {
                 if (!text.classList.contains('active-track')) {
                     // text.classList.add('hover-active'); // Optional visual feedback
                 }
-                text.style.textShadow = "0 0 10px var(--matrix-green), 0 0 20px var(--matrix-green)";
+                // Removed inline textShadow - let CSS handle it with the subtle glow
                 text.style.opacity = "1";
 
                 cursor('pointer');
