@@ -1,0 +1,293 @@
+:root {
+    --matrix-green: #00ff41;
+    --dark-green: #008f11;
+    --bg-black: #0d0d0d;
+    --glow: 0 0 8px var(--matrix-green);
+    /* Tighter glow */
+}
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: var(--bg-black);
+    font-family: 'VT323', monospace;
+    /* Old Computer Font */
+    color: var(--matrix-green);
+    font-size: 16px;
+    /* Base size */
+}
+
+#canvas-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    /* MOVED TO BACKGROUND LAYER (Particles behind UI) */
+    pointer-events: none;
+    /* Let clicks pass through to UI below */
+}
+
+#hand-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 6000;
+    /* SUPER TOP LAYER for Hand Skeleton */
+    pointer-events: none;
+    /* Pass clicks to UI */
+}
+
+#ui-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    /* UI Layer - Above Canvas */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    /* Pass through clicks to underlying elements if needed, but we re-enable pointer-events on children */
+}
+
+/* Vinyl Layout */
+.vinyl-container {
+    position: relative;
+    width: 60vmin;
+    /* Fixed square aspect ratio for centering */
+    height: 60vmin;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    /* Default no events */
+}
+
+.center-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Perfect Center */
+    width: 25%;
+    height: 25%;
+    background: black;
+    /* Solid black again, hand tracking is now ON TOP via Canvas Z-Index */
+    border: 2px solid var(--matrix-green);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+    z-index: 3000;
+    /* Highest in UI */
+    pointer-events: auto;
+    /* Catch clicks */
+    transition: all 0.5s ease;
+}
+
+#inner-circle {
+    width: 40%;
+    height: 40%;
+    border: 2px solid #ffffff !important;
+    /* White Stroke Forced */
+    border-radius: 50%;
+    background: transparent;
+    display: block;
+    margin: auto;
+    position: relative;
+    z-index: 3001;
+    cursor: pointer;
+    pointer-events: auto;
+    transition: all 0.5s ease;
+    box-shadow: none;
+    /* No glow by default */
+}
+
+
+
+#inner-circle:hover,
+#inner-circle.hover-active {
+    box-shadow: 0 0 30px var(--matrix-green), inset 0 0 20px var(--matrix-green);
+    transform: scale(1.2);
+    border-color: #ffffff !important;
+    /* Optional: Make border white on hover for extra pop */
+}
+
+
+
+/* 1. Text Ring (Outer) */
+.vinyl-text-ring {
+    position: absolute;
+    width: 140%;
+    /* Moved further out */
+    height: 140%;
+    animation: rotate 40s linear infinite;
+    pointer-events: none;
+    opacity: 0.6;
+    /* Dimmer, no glow */
+}
+
+.rotating-text {
+    width: 100%;
+    height: 100%;
+    fill: var(--matrix-green);
+    /* Green text */
+    font-family: "Sixtyfour Convergence", sans-serif;
+    font-size: 14px;
+    /* Smaller, old school */
+    letter-spacing: 2px;
+    text-shadow: none;
+}
+
+/* --- DANCE MODE --- */
+/* Spiral Shrink Animation */
+.dance-mode .vinyl-text-ring,
+.dance-mode .track-selector-ring {
+    transform: scale(0) rotate(720deg);
+    /* Spiraling in */
+    opacity: 0;
+    pointer-events: none;
+    /* DISABLE CLICKS */
+    transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    /* Dramatic easing */
+}
+
+.dance-mode .track-name,
+.dance-mode .track-info p {
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+/* 2. Track Selector Ring (Inner - Interactive) */
+.track-selector-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    animation: rotate-reverse 50s linear infinite;
+    top: 0;
+    left: 0;
+}
+
+.track-selector-ring text {
+    fill: #ffffff;
+    /* White text for buttons */
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotate-reverse {
+    from {
+        transform: rotate(360deg);
+    }
+
+    to {
+        transform: rotate(0deg);
+    }
+}
+
+/* Ring Animations */
+.ring-group {
+    transform-origin: center center;
+    transform-box: view-box;
+    /* Crucial for SVG origin */
+    will-change: transform;
+    /* GPU Hint */
+    transform: translateZ(0);
+    /* Force GPU Layer */
+}
+
+/* Active Track Styling (Same as Hover) */
+.active-track {
+    opacity: 1 !important;
+    text-shadow: 0 0 10px var(--matrix-green), 0 0 20px var(--matrix-green) !important;
+    fill: #ffffff !important;
+}
+
+/* Speeds - Even Slower (Very Relaxed) */
+.rotate-cw-slow {
+    animation: rotate 240s linear infinite;
+}
+
+.rotate-ccw-med {
+    animation: rotate-reverse 180s linear infinite;
+}
+
+.rotate-cw-fast {
+    animation: rotate 140s linear infinite;
+}
+
+/* Removed Redundant center-label block to avoid conflicts */
+/* See definition around line 160 */
+
+
+
+
+
+/* Interactive Buttons */
+/* Interactive SVG Text Buttons */
+/* Ensure clicks work only on specific elements */
+.vinyl-container svg {
+    pointer-events: none;
+    /* Let clicks pass through the SVG canvas */
+}
+
+/* Re-enable clicks on the text buttons specifically */
+.track-text-btn {
+    pointer-events: all !important;
+    /* Force hit testing on all parts */
+    fill: #ffffff;
+    /* White text by default */
+    font-size: 24px;
+    font-family: 'VT323', monospace;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+    text-shadow: none;
+    /* Increase Hit Area */
+    stroke: rgba(255, 255, 255, 0.001);
+    stroke-width: 40px;
+    paint-order: stroke;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+}
+
+.track-text-btn:hover {
+    text-shadow: 0 0 10px var(--matrix-green), 0 0 20px var(--matrix-green);
+    opacity: 1;
+}
+
+/* FIX: Disable interaction on buttons when in Dance Mode */
+.dance-mode .track-text-btn {
+    pointer-events: none !important;
+}
+
+/* FIX: Move ring behind background when hidden to prevent ghost blocking */
+.dance-mode .track-selector-ring {
+    z-index: -1 !important;
+}
+
+/* GLOBAL PAUSE (For Interaction) */
+body.global-pause .ring-group,
+body.global-pause .track-selector-ring,
+body.global-pause .vinyl-text-ring {
+    animation-play-state: paused !important;
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infected Mushroom - Interactive Album</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/addons/p5.sound.min.js"></script>
+    <script src="https://unpkg.com/ml5@1/dist/ml5.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10+Charted&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sixtyfour+Convergence&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="canvas-container"></div>
+    <canvas id="hand-canvas"></canvas>
+
+    <div id="ui-overlay">
+        <div class="vinyl-container">
+            <div class="vinyl-text-ring">
+                <svg viewBox="0 0 500 500" class="rotating-text">
+                    <path id="curve" d="M 250, 250 m -190, 0 a 190,190 0 1,1 380,0 a 190,190 0 1,1 -380,0"
+                        fill="transparent" />
+                    <text>
+                        <textPath xlink:href="#curve" startOffset="0%">
+                            VICIOUS DELICIOUS • 2007 • INFECTED MUSHROOM • INTERACTIVE ALBUM •
+                        </textPath>
+                    </text>
+                </svg>
+            </div>
+
+            <!-- Rotating Track Selection Ring (Container for Radial Menu) -->
+            <div class="track-selector-ring">
+                <svg id="track-list-svg" viewBox="0 0 500 500" class="rotating-text" style="overflow: visible;">
+                    <defs>
+                        <!-- Master Curve for Buttons: A segment at the top (Radius 180) -->
+                        <path id="master-curve" d="M 70, 250 A 180,180 0 0,1 430, 250" fill="transparent" />
+                    </defs>
+                    <!-- Buttons injected here by JS -->
+                </svg>
+            </div>
+
+            <div class="center-label">
+                <div id="inner-circle" class="inner-circle" title="Toggle Dance Mode"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="sketch.js"></script>
+</body>
+
+</html>
