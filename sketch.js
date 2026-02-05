@@ -1374,7 +1374,19 @@ function setupUI() {
         [text, hitboxPath].forEach(el => {
             el.addEventListener('click', () => {
                 let song = songObjects[track.file];
-                if (song) {
+
+                // On-demand loading for Safari compatibility
+                if (!song) {
+                    console.log('Loading audio:', track.file);
+                    song = loadSound(track.file, () => {
+                        console.log('Audio loaded:', track.file);
+                        songObjects[track.file] = song;
+                        playTrack(song, track.title, trackNameDisplay, text, track.visualMode);
+                        userStartAudio();
+                    }, (err) => {
+                        console.error('Failed to load audio:', track.file, err);
+                    });
+                } else {
                     playTrack(song, track.title, trackNameDisplay, text, track.visualMode);
                     userStartAudio();
                 }
