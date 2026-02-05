@@ -892,20 +892,7 @@ function draw() {
     // }
 
     // --- UI Overlays ---
-
-    push();
-    resetMatrix(); // Existing HUD
-    fill(0, 255, 0);
-    textSize(24);
-    textAlign(LEFT, TOP);
-    text("Bass: " + floor(bass), 20, 20);
-
-    if (hasHand) {
-        text("Hand Tracks: ON | Chaos: " + nf(map(window.smoothSpread, 20, 200, 0.5, 3.0), 1, 1), 20, 50);
-    } else {
-        text("Hand Tracks: SEARCHING... (Auto-Pilot)", 20, 50);
-    }
-    pop();
+    // Debug HUD removed to prevent WEBGL font warnings in Chrome
 }
 
 // --- INTERACTION HELPER ---
