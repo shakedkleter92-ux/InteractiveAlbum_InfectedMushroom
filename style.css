@@ -88,7 +88,8 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+    box-shadow: none;
+    /* No glow by default */
     z-index: 3000;
     /* Highest in UI */
     pointer-events: auto;
@@ -143,10 +144,10 @@ html {
     height: 100%;
     fill: var(--matrix-green);
     /* Green text */
-    font-family: "Sixtyfour Convergence", sans-serif;
-    font-size: 14px;
-    /* Smaller, old school */
-    letter-spacing: 2px;
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    /* Slightly larger for readability */
+    letter-spacing: 3px;
     text-shadow: none;
 }
 
