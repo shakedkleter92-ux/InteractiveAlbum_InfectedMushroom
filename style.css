@@ -219,7 +219,7 @@ html {
 /* Active Track Styling (Same as Hover) */
 .active-track {
     opacity: 1 !important;
-    text-shadow: 0 0 10px var(--matrix-green), 0 0 20px var(--matrix-green) !important;
+    text-shadow: 0 2px 8px var(--matrix-green) !important;
     fill: #ffffff !important;
 }
 
@@ -272,7 +272,7 @@ html {
 }
 
 .track-text-btn:hover {
-    text-shadow: 0 0 10px var(--matrix-green), 0 0 20px var(--matrix-green);
+    text-shadow: 0 2px 8px var(--matrix-green);
     opacity: 1;
 }
 
